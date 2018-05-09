@@ -26,6 +26,7 @@ function(GetTestRunPath VAR_NAME OBJ_NAME)
       endif()
       string(REPLACE "\\" "/" TMPDIR ${TMPDIR})
     else()
+      set(ENV{TMPDIR} /home/dev0/workspace/tmp)
       set(TMPDIR "$ENV{TMPDIR}")
     endif()
     if(NOT EXISTS "${TMPDIR}")
@@ -41,7 +42,8 @@ function(AddTests)
   cmake_parse_arguments(_AT "" "" "SOURCES;OBJECTS;LIBS;DATA;DEPENDS" ${ARGN})
   foreach(sourcefile ${_AT_SOURCES})
     string(REPLACE "${tensorflow_source_dir}/" "" exename ${sourcefile})
-    string(REPLACE ".cc" "" exename ${exename})
+      message("......>>> " ${exename})
+    string(REPLACE ".cc" "_cpp_spec" exename ${exename})
     string(REPLACE "/" "_" exename ${exename})
     AddTest(
       TARGET ${exename}
@@ -365,12 +367,13 @@ if (tensorflow_BUILD_CC_TESTS)
 
   # include all test
   file(GLOB_RECURSE tf_test_src_simple
-    "${tensorflow_source_dir}/tensorflow/cc/*_test.cc"
-    "${tensorflow_source_dir}/tensorflow/python/*_test.cc"
-    "${tensorflow_source_dir}/tensorflow/core/*_test.cc"
-    "${tensorflow_source_dir}/tensorflow/user_ops/*_test.cc"
-    "${tensorflow_source_dir}/tensorflow/contrib/nearest_neighbor/*_test.cc"
-    "${tensorflow_source_dir}/tensorflow/contrib/rnn/*_test.cc"
+    "${tensorflow_source_dir}/tensorflow/*_test.cc"
+#    "${tensorflow_source_dir}/tensorflow/cc/*_test.cc"
+#    "${tensorflow_source_dir}/tensorflow/python/*_test.cc"
+#    "${tensorflow_source_dir}/tensorflow/core/*_test.cc"
+#    "${tensorflow_source_dir}/tensorflow/user_ops/*_test.cc"
+#    "${tensorflow_source_dir}/tensorflow/contrib/nearest_neighbor/*_test.cc"
+#    "${tensorflow_source_dir}/tensorflow/contrib/rnn/*_test.cc"
   )
 
   # exclude the ones we don't want
@@ -527,11 +530,11 @@ if (tensorflow_BUILD_CC_TESTS)
     "${tensorflow_source_dir}/tensorflow/core/profiler/testdata/*"
   )
 
-  AddTests(
-    SOURCES ${tf_core_profiler_test_srcs}
-    DATA ${tf_core_profiler_test_data}
-    OBJECTS ${tf_obj_test}
-    LIBS ${tf_test_libs}
-  )
+#  AddTests(
+#    SOURCES ${tf_core_profiler_test_srcs}
+#    DATA ${tf_core_profiler_test_data}
+#    OBJECTS ${tf_obj_test}
+#    LIBS ${tf_test_libs}
+#  )
 
 endif(tensorflow_BUILD_CC_TESTS)
