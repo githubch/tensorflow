@@ -8,10 +8,14 @@ project(tensorflow C CXX)
 set(CMAKE_CXX_STANDARD 14)
 
 # Actual source is the ../../.. directory
+message("myself....  " ${tensorflow_SOURCE_DIR})
 get_filename_component(tf_contrib_source_dir ${tensorflow_SOURCE_DIR} PATH)
 get_filename_component(tf_tf_source_dir ${tf_contrib_source_dir} PATH)
 get_filename_component(tensorflow_source_dir ${tf_tf_source_dir} PATH)
 
+message("myself....  " ${tf_contrib_source_dir})
+message("myself....  " ${tf_tf_source_dir})
+message("myself....  " ${tensorflow_source_dir})
 # [CLEANUP] Not sure if this is needed (copied from Protobuf)
 # CMake policies
 cmake_policy(SET CMP0022 NEW)
@@ -431,7 +435,8 @@ else(tensorflow_ENABLE_GPU)
 endif(tensorflow_ENABLE_GPU)
 
 # Find python executable
-include(FindPythonInterp)
+#include(FindPythonInterp) #TODO hcheng: FindPythonInter is cmake's api, but can not specify the version. so better use the following one
+find_package(PythonInterp 3.6 REQUIRED)
 if(NOT ${PYTHONINTERP_FOUND})
     message(FATAL_ERROR "CMake was unable to find a python interpreter.")
 endif()
