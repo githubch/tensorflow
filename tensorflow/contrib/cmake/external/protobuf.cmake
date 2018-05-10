@@ -52,6 +52,7 @@ else()
   set(PROTOBUF_PROTOC_EXECUTABLE ${CMAKE_CURRENT_BINARY_DIR}/protobuf/src/protobuf/protoc)
 endif()
 
+message("#####***#*#****************** >>> " ${CMAKE_COMMAND})
 ExternalProject_Add(protobuf
     PREFIX protobuf
     DEPENDS zlib
